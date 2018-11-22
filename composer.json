@@ -1,0 +1,23 @@
+{
+    "name": "eduluz1976/pervasive",
+    "description": "Library to wrap class methods and add dynamically other callables, allowing add something to be executed before an method, or after it. ",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Eduardo Luz",
+            "email": "eduluz1976@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "eduluz1976\\pervasive\\": "src/",
+            "tests\\eduluz1976\\":"tests/"
+        }
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "=7.0"
+    }
+}
