@@ -2,6 +2,10 @@
 
 namespace eduluz1976\pervasive;
 
+/**
+ * Class Mock
+ * @package eduluz1976\pervasive
+ */
 class Mock
 {
     protected $obj;
@@ -78,6 +82,7 @@ class Mock
             }
 
             $ret = call_user_func_array([$this->obj, $name], $arguments);
+
         }
         return $ret;
     }
@@ -90,6 +95,11 @@ class Mock
         return MockBuilder::getInstance($this);
     }
 
+    /**
+     * @param string $k
+     * @param mixed $v
+     * @param mixed $index
+     */
     public function _set($k, $v, $index = false)
     {
         if (is_array($this->$k) && $index) {
@@ -99,21 +109,37 @@ class Mock
         }
     }
 
+    /**
+     *
+     * @param string $k
+     * @return mixed
+     */
     public function _get($k)
     {
         return $this->$k;
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set($name, $value)
     {
         $this->obj->$name = $value;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function __get($name)
     {
         return $this->obj->$name;
     }
 
+    /**
+     * Just allow to clone the object
+     */
     public function __clone()
     {
         $this->obj = clone $this->obj;
