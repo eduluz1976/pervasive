@@ -1,21 +1,20 @@
 <?php
+
 namespace tests\eduluz1976;
 
-class Request {
-
-
+class Request
+{
     protected static $items = [];
 
-
-    public static function get($name) {
+    public static function get($name)
+    {
         if (isset(self::$items[$name])) {
             return self::$items[$name];
         }
     }
 
-    public static function set($name, $value) {
+    public static function set($name, $value)
+    {
         self::$items[$name] = $value;
     }
-
-
 }

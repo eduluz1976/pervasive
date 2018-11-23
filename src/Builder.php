@@ -20,6 +20,7 @@ class Builder
      */
     public static function design($className, $props = [])
     {
+        assert(class_exists($className), new ClassNotExistsException("Class '{$className}'' does not exists."));
 
         if (isset($props['constructor'])) {
             $obj = self::instantiate($className, $props['constructor']);
@@ -68,7 +69,6 @@ class Builder
         return $obj;
     }
 
-
     /**
      * Apply some functions defined on ``design`` or ``build`` operation.
      *
@@ -77,12 +77,15 @@ class Builder
      */
     protected static function redesign(&$obj, $props = [])
     {
+        $response = [];
         if (isset($props['apply']) && (is_array($props['apply']))) {
             foreach ($props['apply'] as $methodName => $params) {
+                assert(method_exists($obj->getObj(), $methodName), new RuntimeException("Method '{$methodName}' does not exists, or is inaccessible "));
                 if (method_exists($obj->getObj(), $methodName)) {
-                    call_user_func_array([$obj->getObj(), $methodName], $params);
+                    $response[] = call_user_func_array([$obj->getObj(), $methodName], $params);
                 }
             }
         }
+        return $response;
     }
 }

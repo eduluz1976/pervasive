@@ -1,8 +1,9 @@
 <?php
+
 namespace tests\eduluz1976;
 
-class UserController {
-
+class UserController
+{
     protected $email;
 
     /**
@@ -21,15 +22,10 @@ class UserController {
         $this->email = $email;
     }
 
-
-
-
-    public function addNewUser() {
-
-        $this->setEmail( Request::get('email'));
-
-
+    public function addNewUser()
+    {
+        if (!$this->getEmail()) {
+            $this->setEmail(Request::get('email'));
+        }
     }
-
-
 }

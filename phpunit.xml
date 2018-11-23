@@ -5,6 +5,9 @@
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+
+         convertErrorsToExceptions="true"
+
          verbose="true"
          bootstrap="bootstrap_test.php"
 >

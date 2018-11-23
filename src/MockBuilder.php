@@ -24,7 +24,6 @@ class MockBuilder
         return self::$instance;
     }
 
-
     /**
      * @param string $methodName
      * @param Closure $closure
@@ -33,6 +32,18 @@ class MockBuilder
     public function addPreFunction($methodName, $closure)
     {
         self::$context->_set('methods', $closure, 'pre-' . $methodName);
+
+        return $this;
+    }
+
+    /**
+     * @param string $methodName
+     * @param Closure $closure
+     * @return $this
+     */
+    public function addPosFunction($methodName, $closure)
+    {
+        self::$context->_set('methods', $closure, 'pos-' . $methodName);
 
         return $this;
     }
