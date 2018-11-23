@@ -66,25 +66,64 @@ class Mock
         return $this;
     }
 
-
-
-    public function __construct($obj)
+    /**
+     * Mock constructor.
+     * @param object $obj
+     */
+    public function __construct($obj = null)
     {
-        $this->obj = $obj;
+        if ($obj) {
+            $this->setObj($obj);
+        }
     }
 
+    /**
+     * Capture the calls to methods to run on $obj context.
+     *
+     * @param string $name
+     * @param mixed $arguments
+     * @return mixed|null
+     */
     public function __call($name, $arguments)
     {
         $ret = null;
-        if (method_exists($this->obj, $name)) {
-            if (isset($this->methods['pre-' . $name])) {
-                call_user_func($this->methods['pre-' . $name], $this);
-            }
 
-            $ret = call_user_func_array([$this->obj, $name], $arguments);
+        assert(is_object($this->getObj()), "Invalid type on 'object' context: type found= " . gettype($this->getObj()));
+        assert(method_exists($this->getObj(), $name), "Method $name is not implemented");
 
-        }
+        $this->_testAndRunPreMethod($name);
+
+        $ret = call_user_func_array([$this->getObj(), $name], $arguments);
+
+        $this->_testAndRunPosMethod($name);
+
         return $ret;
+    }
+
+    /**
+     * @param $methodName
+     */
+    protected function _testAndRunPreMethod($methodName)
+    {
+        if (isset($this->methods['pre-' . $methodName])) {
+            $method = $this->methods['pre-' . $methodName];
+            $return = $method->call($this->getObj());
+            assert(is_object($return), new RuntimeException("Invalid return from method $methodName (pre): " . gettype($return)));
+            $this->setObj($return);
+        }
+    }
+
+    /**
+     * @param $methodName
+     */
+    protected function _testAndRunPosMethod($methodName)
+    {
+        if (isset($this->methods['pos-' . $methodName])) {
+            $method = $this->methods['pos-' . $methodName];
+            $return = $method->call($this->getObj());
+            assert(is_object($return), new RuntimeException("Invalid return from method $methodName (pos): " . gettype($return)));
+            $this->setObj($return);
+        }
     }
 
     /**
